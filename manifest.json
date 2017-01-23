@@ -1,0 +1,15 @@
+{
+    "name": "com.ubuntu.developer.username.generate-queries",
+    "description": "description of generate-queries",
+    "framework": "ubuntu-sdk-14.04-qml",
+    "architecture": "all",
+    "title": "generate-queries",
+    "hooks": {
+        "generate-queries": {
+            "apparmor": "generate-queries.json",
+            "desktop": "generate_queries.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": ""
+}
