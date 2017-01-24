@@ -17,6 +17,7 @@ add_executable(${PROJECT_NAME} ${SRC_LIST})
 
 
 find_package(PkgConfig)
+ include_directories("/usr/include/gtkmm-3.0")
 pkg_check_modules(GTK "gtkmm-3.0")
 target_link_libraries(${PROJECT_NAME}  ${GTK_LIBRARIES})
 add_definitions(${GTK_CFLAGS} ${GTK_CFLAGS_OTHER})
