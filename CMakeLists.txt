@@ -10,6 +10,7 @@ set(REQUIRED_LIBRARIES
                 boost_system
                 boost_log
                 boost_timer
+                pcap
 )
 
 aux_source_directory(. SRC_LIST)
