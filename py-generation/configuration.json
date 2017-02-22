@@ -5,6 +5,11 @@
         "type": "uniform",
         "low_boundary": 1,
         "up_boundary": 15
+      },
+      "page_number":{
+        "type": "log-normal",
+        "M": 5,
+        "D": 2
       }
     }
   },
