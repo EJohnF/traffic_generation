@@ -27,6 +27,7 @@ def open_page(link):
     # view.open("http://www."+link)
     view.open(link)
     thread = Thread(target=thread_open, args=( ))
+    thread.setDaemon(True)
     thread.start()
     threadList.append(thread)
 

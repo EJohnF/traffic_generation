@@ -8,8 +8,8 @@
       },
       "page_number":{
         "type": "log-normal",
-        "M": 5,
-        "D": 2
+        "M": 4,
+        "D": 1
       }
     }
   },
