@@ -35,10 +35,6 @@
   },
   "sites":[
     {
-      "link": "vk.com",
-      "scheme": "default"
-    },
-    {
       "type": "loaded_list",
       "file_type": "xlsx",
       "file_name": "sitelist.xlsx",

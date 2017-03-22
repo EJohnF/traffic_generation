@@ -1,4 +1,4 @@
-import thread
+from threading import Thread
 import utils
 import random
 import time
@@ -34,7 +34,8 @@ class Surfing:
 
     def start(self):
         self.stop = False
-        thread.start_new_thread(self.worker, ())
+        thread = Thread(target=self.worker, args=())
+        thread.start()
 
     def stop(self):
         self.stop = True

@@ -1,1 +1,0 @@
-pip install google openpyxl bs4 requests lxml

@@ -1,13 +1,11 @@
-import random
 import numpy
 import google
 import time
 from bs4 import BeautifulSoup
 import requests
-import string
-import SiteList
-import Surfing
-import Opener
+from SiteList import SiteList
+from Surfing import Surfing
+from Opener import *
 
 random.seed(10)
 
@@ -23,18 +21,18 @@ def distribution_to_value(description):
 
 def correctURL(originalURL):
     goodURL = originalURL
-    if string.find(originalURL, 'http') == -1:
+    if str.find(originalURL, 'http') == -1:
         goodURL = 'http://' + originalURL
     return goodURL
 
 
 def get_sitemaps(siteURL):
     url = correctURL(siteURL)
-    if string.find(siteURL, 'sitemap.xml') == -1:
-        if string.rfind(siteURL, '/') < len(siteURL) - 1:
+    if str.find(siteURL, 'sitemap.xml') == -1:
+        if str.rfind(siteURL, '/') < len(siteURL) - 1:
             url += '/'
         url += 'sitemap.xml'
-    print 'point to find sitemaps: ', url
+    print('point to find sitemaps: ', url)
     try:
         r = requests.get(url)
     except:
@@ -48,7 +46,7 @@ def get_sitemaps(siteURL):
 
 
 def get_URLs_from_sitemap(sitemapURL, number=20, withInfo=False):
-    print 'sitemap: ', sitemapURL
+    print('sitemap: ', sitemapURL)
     r = requests.get(sitemapURL)
     data = r.text
     soup = BeautifulSoup(data, 'lxml')
@@ -70,7 +68,7 @@ def get_URLs_from_sitemap(sitemapURL, number=20, withInfo=False):
             result.append((urlNext, changefreq, priority))
         else:
             result.append(urlNext)
-            #         print urlNext, changefreq, priority
+            #         print(urlNext, changefreq, priority)
     return result
 
 
@@ -86,23 +84,23 @@ def get_URLs_from_page(url):
         if tag.attrs:
             try:
                 link = tag.attrs['href']
-                if string.find(link, 'http') == -1:
-                    if string.rfind(url, '/') == len(url) - 1:
+                if str.find(link, 'http') == -1:
+                    if str.rfind(url, '/') == len(url) - 1:
                         link = url[0:len(url) - 1] + link
                     else:
                         link = url + link
-                        #                 print link
+                        #                 print(link)
                 result.append(link)
             except:
                 a = 1
-                #                 print 'parse Error of tag: ', tag
+                #                 print('parse Error of tag: ', tag)
     return result
 
 
 # In[23]:
 
 def generate_pages_google(site_link, number_pages=10):
-    print 'generate_pages_google'
+    print('generate_pages_google')
     result = []
     i = 0
     for url in google.search("site:" + site_link, num=number_pages):
@@ -115,7 +113,7 @@ def generate_pages_google(site_link, number_pages=10):
 
 
 def generate_pages_sitemap(site, number_pages=10):
-    print 'generate_pages_sitemap'
+    print('generate_pages_sitemap')
     sitemaps = get_sitemaps(site)
     result = []
     for sm in sitemaps:
@@ -124,7 +122,7 @@ def generate_pages_sitemap(site, number_pages=10):
 
 
 def generate_pages_scraping(site, number_pages=10):
-    print 'generate_pages_scraping'
+    print('generate_pages_scraping')
     result = []
     first_lvl_pages = get_URLs_from_page(site)
     first_lvl_pages = random.sample(first_lvl_pages, min(number_pages, len(first_lvl_pages)))
@@ -146,21 +144,21 @@ def generate_page_list(site, generator, number_pages=10):
 # In[25]:
 
 def go_round_site(site, scheme):
-    print 'go round site: ', site, ' scheme: ', scheme
+    print('go round site: ', site, ' scheme: ', scheme)
     number_page = distribution_to_value(scheme['page_number'])
-    print 'page_number ', number_page
+    print('page_number ', number_page)
     pages_list = generate_page_list(site, scheme['page_generator'], int(number_page))
     for page in pages_list:
-        Opener.open_page(page)
+        open_page(page)
         sleep_time = distribution_to_value(scheme['time_between_page'])
-        print 'sleep time: ', sleep_time
+        print('sleep time: ', sleep_time)
         time.sleep(sleep_time)
 
 
 def process_specific_type(site_object, config):
     typ = site_object['type']
     if typ == "sitelist_xlsx":
-        sitelist = SiteList.SiteList(site_object)
+        sitelist = SiteList(site_object)
         count_for_visit = site_object['count_for_visit']
         # sitelist = random.sample(sitelist, min(count_for_visit, len(sitelist)))
         scheme = parse_scheme(site_object['scheme'], config)
@@ -170,19 +168,19 @@ def process_specific_type(site_object, config):
             if count_for_visit < 0:
                 break
     if typ == "infinity_surfing":
-        surfing = Surfing.Surfing(site_object['link'], parse_scheme(site_object['scheme']))
+        surfing = Surfing(site_object['link'], parse_scheme(site_object['scheme'],config))
         surfing.start()
 
 
 def parse_scheme(scheme, config):
-    if isinstance(scheme, basestring):
+    if isinstance(scheme, str):
         return config['schemes'][scheme]
     else:
         return scheme
 
 
 def parse_site(site, config):
-    if isinstance(site, basestring):
+    if isinstance(site, str):
         go_round_site(site, config['schemes']['default'])
     else:
         withtype = False
@@ -201,6 +199,6 @@ def parse_site(site, config):
 
 def parser_site_list(sites, config):
     for site in sites:
-        print "site!!! :", site
+        print("site!!! :", site)
         parse_site(site, config)
         # thread.start_new_thread(parse_site, (site, config,))
