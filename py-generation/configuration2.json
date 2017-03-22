@@ -1,0 +1,66 @@
+{
+  "page_generators": [
+    "google", "sitemap", "site-scraping"
+  ],
+  "distribution_types": [
+    "uniform", "log-normal"
+  ],
+  "schemes": {
+    "default": {
+      "page_generator": "site-scraping",
+      "time_between_page": {
+        "type": "uniform",
+        "low_boundary": 1,
+        "up_boundary": 15
+      },
+      "page_number":{
+        "type": "log-normal",
+        "M": 4,
+        "D": 1
+      }
+    }
+  },
+  "sites":[
+    {
+      "link": "vk.com",
+      "scheme": "default"
+    },
+    {
+      "link":"yandex.ru",
+      "scheme": "default"
+    },
+    "rzd.ru",
+    {
+      "link": "habrahabr.ru",
+      "scheme": {
+        "page_generator": "sitemap",
+        "time_between_page": {
+          "type": "log-normal",
+          "M": 4,
+          "D": 2
+        },
+        "page_number":{
+          "type": "uniform",
+          "low_boundary": 5,
+          "up_boundary": 35
+        }
+      }
+    },
+    {
+      "link": "google.ru",
+      "scheme": {
+        "page_generator": "sitemap",
+        "time_between_page": {
+          "type": "uniform",
+          "low_boundary": 2,
+          "up_boundary": 50
+        },
+        "page_number":{
+          "type": "uniform",
+          "low_boundary": 5,
+          "up_boundary": 35
+        }
+      }
+    }
+  ]
+}
