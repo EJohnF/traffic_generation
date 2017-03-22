@@ -6,7 +6,7 @@ NS="ns1"
 VETH="veth1"
 VPEER="vpeer1"
 VETH_ADDR="10.200.1.1"
-VPEER_ADDR="10.200.1.2"
+VPEER_ADDR="10.42.0.45"
 
 if [[ $EUID -ne 0 ]]; then
     echo "You must be root to run this script"

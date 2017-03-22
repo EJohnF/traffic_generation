@@ -1,0 +1,7 @@
+{
+  "name": "SimpleExecutable", 
+  "executable": "gen3.py",
+  "arguments": ["ya.ru"],
+  "module": "prcss.executor",
+  "appendConfig": true
+}

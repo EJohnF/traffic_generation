@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import json
 import random
 import numpy
@@ -10,10 +11,6 @@ from threading import Thread
 view = webkit.WebView()
 sw = gtk.ScrolledWindow()
 sw.add(view)
-
-# win = gtk.Window(gtk.WINDOW_TOPLEVEL)
-# win.add(sw)
-# win.show_all()
 
 
 def thread_open():
@@ -48,24 +45,24 @@ def generate_page_list(site_link, number_pages=10):
     i = 0
     for url in google.search("site:" + site_link, num=number_pages):
         if i < number_pages:
-            print 'generated page: ', url
+            #print 'generated page: ', url
             result.append(url)
             i += 1
         else:
             break
-    print 'list generated'
+    #print 'list generated'
     return result
 
 
 def generator(sites):
     for site in sites:
         number_page = distribution_to_value(config['schemes']['default']['page_number'])
-        print 'page_number ', number_page
+        #print 'page_number ', number_page
         pages_list = generate_page_list(site, int(number_page))
         for page in pages_list:
             open_page(page)
             sleep_time = distribution_to_value(config['schemes']['default']['time_between_page'])
-            print 'sleep time: ', sleep_time
+            #print 'sleep time: ', sleep_time
             time.sleep(sleep_time)
 
 f = open('configuration.json', 'r')

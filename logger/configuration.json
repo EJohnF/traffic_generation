@@ -1,0 +1,19 @@
+{
+  "schemes": {
+    "default": {
+      "time_between_page": {
+        "type": "uniform",
+        "low_boundary": 1,
+        "up_boundary": 15
+      },
+      "page_number":{
+        "type": "log-normal",
+        "M": 4,
+        "D": 1
+      }
+    }
+  },
+  "sites":[
+    "vk.com", "habrahabr.ru", "rzd.ru", "yandex.ru"
+  ]
+}
