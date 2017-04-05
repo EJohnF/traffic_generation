@@ -1,6 +1,6 @@
 {
   "name": "SimpleExecutable", 
-  "executable": "gen3.py",
+  "executable": "/home/evgeny/vkr/vkr/generate_queries/logger_usage/gen3.py",
   "arguments": ["ya.ru"],
   "module": "prcss.executor",
   "appendConfig": true

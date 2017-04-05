@@ -12,7 +12,7 @@ from process_python_api import Logger, LError, LInfo
 view = WebKit.WebView()
 sw = Gtk.ScrolledWindow()
 sw.add(view)
-Logger.init("Undefined executable")
+Logger.init("Generator")
 
 def thread_open():
     Gtk.main()
@@ -21,9 +21,9 @@ threadList = []
 
 def open_page(link):
     Logger.log(LInfo, "open page {}".format(link));
-    view.open("http://www."+link)
+    #view.open("http://www."+link)
     #view.open(link)
-    thread_open();
+    #thread_open();
 #    thread = Thread(target=thread_open, args=( ))
 #   thread.setDaemon(True)
 #    thread.start()
@@ -31,4 +31,11 @@ def open_page(link):
 
 random.seed(10)
 
-open_page("habrahabr.ru")
+while True:
+    open_page("habrahabr.ru")
+    time.sleep(3)
+    open_page("vk.ru")
+    time.sleep(3)
+    open_page("yandex.ru")
+    time.sleep(6)
+

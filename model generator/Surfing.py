@@ -19,7 +19,7 @@ class Surfing:
 
     def worker(self):
         while not self.stop:
-            self.currentURL = self.links[random.randint(0, len(self.links))]
+            self.currentURL = self.links[random.randint(0, len(self.links)-1)]
             self.history.append(self.currentURL)
             self.links = utils.get_URLs_from_page(self.currentURL)
             resulted_list = []
