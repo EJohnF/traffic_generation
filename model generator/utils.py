@@ -157,16 +157,17 @@ def go_round_site(site, scheme):
 
 def process_specific_type(site_object, config):
     typ = site_object['type']
-    if typ == "sitelist_xlsx":
+    if typ == "loaded_list":
         sitelist = SiteList(site_object)
+        sitelist.next()
         count_for_visit = site_object['count_for_visit']
         # sitelist = random.sample(sitelist, min(count_for_visit, len(sitelist)))
         scheme = parse_scheme(site_object['scheme'], config)
-        for site in sitelist:
-            go_round_site(site, scheme)
+        while (count_for_visit > 0):
+            open_page(sitelist.next())
+            time.sleep(2)
+            # go_round_site(sitelist.next(), scheme)
             count_for_visit -= 1
-            if count_for_visit < 0:
-                break
     if typ == "infinity_surfing":
         surfing = Surfing(site_object['link'], parse_scheme(site_object['scheme'],config))
         surfing.start()

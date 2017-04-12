@@ -24,12 +24,12 @@
       "time_between_page": {
         "type": "uniform",
         "low_boundary": 1,
-        "up_boundary": 10
+        "up_boundary": 1
       },
       "page_number":{
         "type": "uniform",
         "low_boundary": 1,
-        "up_boundary": 3
+        "up_boundary": 10
       }
     }
   },
@@ -40,50 +40,8 @@
       "file_name": "sitelist.xlsx",
       "worksheet":"List",
       "column":"A",
-      "count_for_visit": 10,
+      "count_for_visit": 350,
       "scheme": "fast_going"
-    },
-    {
-      "type": "infinity_surfing",
-      "link": "habrahabr.ru",
-      "scheme": "fast_going"
-    },
-    {
-      "link":"yandex.ru",
-      "scheme": "default"
-    },
-    "rzd.ru",
-    {
-      "link": "habrahabr.ru",
-      "scheme": {
-        "page_generator": "sitemap",
-        "time_between_page": {
-          "type": "log-normal",
-          "M": 4,
-          "D": 2
-        },
-        "page_number":{
-          "type": "uniform",
-          "low_boundary": 5,
-          "up_boundary": 35
-        }
-      }
-    },
-    {
-      "link": "google.ru",
-      "scheme": {
-        "page_generator": "sitemap",
-        "time_between_page": {
-          "type": "log-normal",
-          "M": 4,
-          "D": 2
-        },
-        "page_number":{
-          "type": "uniform",
-          "low_boundary": 5,
-          "up_boundary": 35
-        }
-      }
     }
   ]
 }
