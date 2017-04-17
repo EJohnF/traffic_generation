@@ -7,6 +7,7 @@ from SiteList import SiteList
 from Surfing import Surfing
 from UsualSite import UsualSite
 from Opener import *
+from process_python_api import Logger, LError, LInfo
 
 random.seed(10)
 
@@ -17,6 +18,8 @@ def distribution_to_value(description):
         return random.randint(int(description["low_boundary"]), int(description["up_boundary"]))
     if dis_type == "log-normal":
         return numpy.exp(numpy.random.normal(description["M"], description["D"]))
+    if dis_type == "fix":
+        return description["value"]
     return 0
 
 
@@ -33,7 +36,7 @@ def get_sitemaps(siteURL):
         if str.rfind(siteURL, '/') < len(siteURL) - 1:
             url += '/'
         url += 'sitemap.xml'
-    print('point to find sitemaps: ', url)
+    Logger.log(LInfo, 'url to sitemaps: {}'.format(url))
     try:
         r = requests.get(url)
     except:
@@ -47,7 +50,7 @@ def get_sitemaps(siteURL):
 
 
 def get_URLs_from_sitemap(sitemapURL, number=20, withInfo=False):
-    print('sitemap: ', sitemapURL)
+    Logger.log(LInfo, 'parse sitemap: {}'.format(sitemapURL))
     r = requests.get(sitemapURL)
     data = r.text
     soup = BeautifulSoup(data, 'lxml')
@@ -69,7 +72,6 @@ def get_URLs_from_sitemap(sitemapURL, number=20, withInfo=False):
             result.append((urlNext, changefreq, priority))
         else:
             result.append(urlNext)
-            #         print(urlNext, changefreq, priority)
     return result
 
 
@@ -90,18 +92,14 @@ def get_URLs_from_page(url):
                         link = url[0:len(url) - 1] + link
                     else:
                         link = url + link
-                        #                 print(link)
                 result.append(link)
             except:
-                a = 1
-                #                 print('parse Error of tag: ', tag)
+                pass
     return result
 
 
-# In[23]:
-
 def generate_pages_google(site_link, number_pages=10):
-    print('generate_pages_google')
+    Logger.log(LInfo, 'generate page list by google')
     result = []
     i = 0
     for url in google.search("site:" + site_link, num=number_pages):
@@ -114,7 +112,7 @@ def generate_pages_google(site_link, number_pages=10):
 
 
 def generate_pages_sitemap(site, number_pages=10):
-    print('generate_pages_sitemap')
+    Logger.log(LInfo, 'generate page list by sitemap')
     sitemaps = get_sitemaps(site)
     result = []
     for sm in sitemaps:
@@ -123,7 +121,7 @@ def generate_pages_sitemap(site, number_pages=10):
 
 
 def generate_pages_scraping(site, number_pages=10):
-    print('generate_pages_scraping')
+    Logger.log(LInfo, 'generate page list by page-scraping')
     result = []
     first_lvl_pages = get_URLs_from_page(site)
     first_lvl_pages = random.sample(first_lvl_pages, min(number_pages, len(first_lvl_pages)))
@@ -138,21 +136,18 @@ def generate_page_list(site, generator, number_pages=10):
         return generate_pages_sitemap(site, number_pages)
     if generator == 'site-scraping':
         return generate_pages_scraping(site, number_pages)
-    # the default one
     return generate_pages_google(site, number_pages)
 
 
-# In[25]:
-
 def go_round_site(site, scheme):
-    print('go round site: ', site, ' scheme: ', scheme)
+    Logger.log(LInfo, 'process site: {0} scheme: {1}'.format(site, scheme))
     number_page = distribution_to_value(scheme['page_number'])
-    print('page_number ', number_page)
+    Logger.log(LInfo, 'number of pages on site: '.format(number_page))
     pages_list = generate_page_list(site, scheme['page_generator'], int(number_page))
     for page in pages_list:
         open_page(page)
         sleep_time = distribution_to_value(scheme['time_between_page'])
-        print('sleep time: ', sleep_time)
+        Logger.log(LInfo, 'sleep time: '.format(sleep_time))
         time.sleep(sleep_time)
 
 

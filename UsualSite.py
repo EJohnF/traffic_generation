@@ -12,7 +12,7 @@ class UsualSite(Worker):
         super().__init__(site_scheme, config)
 
     def worker(self):
-        scheme = utilsparse_scheme(self.site_scheme['scheme'], config)
+        scheme = utils.parse_scheme(self.site_scheme['scheme'], self.config)
         utils.go_round_site(self.site_scheme['link'], scheme)
 
     def start(self):

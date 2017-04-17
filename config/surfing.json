@@ -35,19 +35,19 @@
   },
   "sites":[
     {
-      "type": "infinity_surfing",
       "link": "habrahabr.ru",
-      "scheme": "fast_going"
-    },
-    {
-      "type": "infinity_surfing",
-      "link": "xaker.ru",
-      "scheme": "fast_going"
-    },
-    {
-      "type": "infinity_surfing",
-      "link": "rbc.ru",
-      "scheme": "fast_going"
+      "scheme": {
+          "page_generator": "sitemap",
+          "time_between_page": {
+            "type": "uniform",
+            "low_boundary": 10,
+            "up_boundary": 40
+          },
+          "page_number":{
+            "type": "fix",
+            "value": 200
+          }
+      }
     }
   ]
 }

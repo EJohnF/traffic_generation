@@ -4,13 +4,16 @@ import random
 import time
 from Opener import *
 from Worker import Worker
+from process_python_api import Logger, LError, LInfo
 
 
 class Surfing(Worker):
     def __init__(self, initURL, scheme):
         super().__init__(initURL, scheme)
         self.currentURL = initURL
-        self.links = set(utils.get_URLs_from_page(initURL))
+        links = utils.get_URLs_from_page(initURL)
+        Logger.log(LInfo, "number of links on page {0} is {1}".format(initURL, len(links)))
+        self.links = set(links)
         self.history = set()
         self.scheme = scheme
 
@@ -18,11 +21,13 @@ class Surfing(Worker):
         while not self.stop and len(self.links) > 0:
             self.currentURL = self.links.pop()
             self.history.add(self.currentURL)
-            self.links.update(utils.get_URLs_from_page(self.currentURL))
-            print(self.history)
+            links = utils.get_URLs_from_page(self.currentURL)
+            Logger.log(LInfo, "number of links on page {0} is {1}".format(self.currentURL, len(links)))
+            self.links.update(links)
             self.links -= self.history
             sleep_time = utils.distribution_to_value(self.scheme['time_between_page'])
             open_page(self.currentURL)
+            Logger.log(LInfo, "sleep {}".format(sleep_time))
             time.sleep(sleep_time)
 
     def start(self):
