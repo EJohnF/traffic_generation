@@ -33,7 +33,8 @@ def main(argv):
         launched_string = 'python3 Generator.py ' + '-n ' + proc['name'] + ' -c ' + proc['config']
         Logger.log(LInfo, "launch new process {}".format(proc['name']))
         Logger.log(LInfo, "launched string {}".format(launched_string))
-        os.system(launched_string)
+        subprocess.Popen(launched_string, shell=True)
+    time.sleep(10000)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

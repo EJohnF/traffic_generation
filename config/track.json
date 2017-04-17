@@ -1,8 +1,8 @@
 {
   "processes": [
     {
-      "name":"yandex_catalog",
-      "config":"yandex_catalog.json"
+      "name":"surfing",
+      "config":"surfing.json"
     }
   ]
 }

@@ -1,11 +1,8 @@
 class Worker:
-    config = ''
-    site_scheme = ''
-    stop = False
-
     def __init__(self, site_object, config):
         self.config = config
         self.site_scheme = site_object
+        self.stop = False
 
     def start(self):
         Logger.log(LInfo, "start working Specific Type Worker".format(last, waiting))

@@ -7,28 +7,20 @@ from Worker import Worker
 
 
 class Surfing(Worker):
-    currentURL = ''
-    links = []
-    history = []
-
     def __init__(self, initURL, scheme):
         super().__init__(initURL, scheme)
         self.currentURL = initURL
-        self.links = utils.get_URLs_from_page(initURL)
-        self.history.append(initURL)
+        self.links = set(utils.get_URLs_from_page(initURL))
+        self.history = set()
         self.scheme = scheme
 
     def worker(self):
-        while not self.stop:
-            self.currentURL = self.links[random.randint(0, len(self.links) - 1)]
-            self.history.append(self.currentURL)
-            self.links = utils.get_URLs_from_page(self.currentURL)
-            resulted_list = []
-            for link in self.links:
-                if link not in self.history:
-                    resulted_list.append(link)
-            if len(resulted_list) > 0:
-                self.links = resulted_list
+        while not self.stop and len(self.links) > 0:
+            self.currentURL = self.links.pop()
+            self.history.add(self.currentURL)
+            self.links.update(utils.get_URLs_from_page(self.currentURL))
+            print(self.history)
+            self.links -= self.history
             sleep_time = utils.distribution_to_value(self.scheme['time_between_page'])
             open_page(self.currentURL)
             time.sleep(sleep_time)

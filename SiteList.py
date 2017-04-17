@@ -16,11 +16,10 @@ def parse_xlsx_list(filename, worksheet, columnname):
 
 
 class SiteList(Worker):
-    index = -1
-    sites = []
-
     def __init__(self, site_object, config):
         super().__init__(site_object, config)
+        self.index = -1
+        self.sites = []
         if site_object['file_type'] == 'xlsx':
             self.sites = parse_xlsx_list(site_object['file_name'], site_object['worksheet'], site_object['column'])
 
