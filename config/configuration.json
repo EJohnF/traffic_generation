@@ -37,7 +37,7 @@
     {
       "type": "loaded_list",
       "file_type": "xlsx",
-      "file_name": "sitelist.xlsx",
+      "file_name": "support_files/sitelist.xlsx",
       "worksheet":"List",
       "column":"A",
       "count_for_visit": 350,

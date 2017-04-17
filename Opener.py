@@ -8,14 +8,13 @@ import time
 from process_python_api import Logger, LError, LInfo
 import subprocess
 from collections import deque
-from MainLoop import view
+from Generator import view
 
 view.connect("load-finished", lambda v, f: fin())
-# Logger.init("Opener")
 
 queue = deque()
-
 prevFinished = True
+last = ''
 
 
 def fin():
@@ -24,32 +23,29 @@ def fin():
 
 
 def main_loop():
-    time.sleep(3)
-
     global prevFinished
+    global last
     waiting = 0
     while True:
-        # print(prevFinished)
-        print(prevFinished, waiting)
-        # if waiting > 10:
-        #     Gdk.threads_enter()
-        #     view.stop_loading()
-        #     Gdk.threads_leave()
-        if prevFinished:
+        if prevFinished and len(queue) > 0:
+            if last != '':
+                Logger.log(LInfo, "loading time for {0} was: {1} seconds".format(last, waiting))
             waiting = 0
             prevFinished = False
             Gdk.threads_enter()
             current = queue.popleft()
-            print("open: ", current)
+            last = current
+            Logger.log(LInfo, "open: {}".format(current))
             view.open(current)
             Gdk.threads_leave()
         waiting += 1
         time.sleep(1)
 
 
+th = Thread(target=main_loop)
+th.start()
+
+
 def open_page(link):
-    print('put in deque: ' + link + "dec size: " + str(len(queue)))
+    Logger.log(LInfo, 'put in deque: ' + link + "dec size: " + str(len(queue)))
     queue.append(link)
-    if len(queue) == 1:
-        main_loop()
-    # subprocess.Popen('python3 open.py ' + link, shell=True)

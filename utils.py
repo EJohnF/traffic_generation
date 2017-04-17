@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 from SiteList import SiteList
 from Surfing import Surfing
+from UsualSite import UsualSite
 from Opener import *
 
 random.seed(10)
@@ -155,24 +156,6 @@ def go_round_site(site, scheme):
         time.sleep(sleep_time)
 
 
-def process_specific_type(site_object, config):
-    typ = site_object['type']
-    if typ == "loaded_list":
-        sitelist = SiteList(site_object)
-        sitelist.next()
-        count_for_visit = site_object['count_for_visit']
-        # sitelist = random.sample(sitelist, min(count_for_visit, len(sitelist)))
-        scheme = parse_scheme(site_object['scheme'], config)
-        while sitelist.hasNext():
-            open_page(sitelist.next())
-            time.sleep(1)
-            # go_round_site(sitelist.next(), scheme)
-            count_for_visit -= 1
-    if typ == "infinity_surfing":
-        surfing = Surfing(site_object['link'], parse_scheme(site_object['scheme'],config))
-        surfing.start()
-
-
 def parse_scheme(scheme, config):
     if isinstance(scheme, str):
         return config['schemes'][scheme]
@@ -180,26 +163,25 @@ def parse_scheme(scheme, config):
         return scheme
 
 
-def parse_site(site, config):
-    if isinstance(site, str):
-        go_round_site(site, config['schemes']['default'])
-    else:
-        withtype = False
-        try:
-            # check is there 'type' field in site object
-            t = site['type']
-            withtype = True
-        except:
-            # work with given link and given scheme
-            scheme = parse_scheme(site['scheme'], config)
-            go_round_site(site['link'], scheme)
-        if withtype:
-            # type was given, so work with specific site object
-            process_specific_type(site, config)
+def process_specific_type(site_scheme, config):
+    typ = site_scheme['type']
+    obj = ''
+    if typ == "loaded_list":
+        obj = SiteList(site_scheme, config)
+    if typ == "infinity_surfing":
+        obj = Surfing(site_scheme['link'], parse_scheme(site_scheme['scheme'], config))
+    if typ == "usual_site":
+        obj = UsualSite(site_scheme, config)
+    obj.start()
+    return obj
 
 
-def parser_site_list(sites, config):
-    for site in sites:
-        print("site!!! :", site)
-        parse_site(site, config)
-        # thread.start_new_thread(parse_site, (site, config,))
+def parse_site_scheme(site, config):
+    try:
+        # check is there 'type' field in site object
+        t = site['type']
+    except:
+        # work with given link and given scheme
+        site['type'] = "usual_site"
+
+    return process_specific_type(site, config)

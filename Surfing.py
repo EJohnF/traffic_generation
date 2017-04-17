@@ -2,16 +2,17 @@ from threading import Thread
 import utils
 import random
 import time
-import Opener
+from Opener import *
+from Worker import Worker
 
 
-class Surfing:
+class Surfing(Worker):
     currentURL = ''
     links = []
     history = []
-    stop = False
 
     def __init__(self, initURL, scheme):
+        super().__init__(initURL, scheme)
         self.currentURL = initURL
         self.links = utils.get_URLs_from_page(initURL)
         self.history.append(initURL)
@@ -19,7 +20,7 @@ class Surfing:
 
     def worker(self):
         while not self.stop:
-            self.currentURL = self.links[random.randint(0, len(self.links)-1)]
+            self.currentURL = self.links[random.randint(0, len(self.links) - 1)]
             self.history.append(self.currentURL)
             self.links = utils.get_URLs_from_page(self.currentURL)
             resulted_list = []
@@ -29,13 +30,10 @@ class Surfing:
             if len(resulted_list) > 0:
                 self.links = resulted_list
             sleep_time = utils.distribution_to_value(self.scheme['time_between_page'])
-            Opener.open_page(self.currentURL)
+            open_page(self.currentURL)
             time.sleep(sleep_time)
 
     def start(self):
         self.stop = False
         thread = Thread(target=self.worker, args=())
         thread.start()
-
-    def stop(self):
-        self.stop = True
