@@ -1,0 +1,4 @@
+node.local: true
+
+http.cors.allow-origin: "/.*/"
+http.cors.enabled: true
