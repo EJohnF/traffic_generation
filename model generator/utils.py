@@ -163,9 +163,9 @@ def process_specific_type(site_object, config):
         count_for_visit = site_object['count_for_visit']
         # sitelist = random.sample(sitelist, min(count_for_visit, len(sitelist)))
         scheme = parse_scheme(site_object['scheme'], config)
-        while (count_for_visit > 0):
+        while sitelist.hasNext():
             open_page(sitelist.next())
-            time.sleep(2)
+            time.sleep(1)
             # go_round_site(sitelist.next(), scheme)
             count_for_visit -= 1
     if typ == "infinity_surfing":

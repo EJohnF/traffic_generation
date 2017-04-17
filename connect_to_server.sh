@@ -1,2 +1,2 @@
 snx -s winnie.ispras.ru -u ejohnf
-CieLohduu2
+FeP$16Az
