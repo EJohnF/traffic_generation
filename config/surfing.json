@@ -48,6 +48,36 @@
             "value": 200
           }
       }
+    },
+    {
+      "link": "xaker.ru",
+      "scheme": {
+          "page_generator": "google",
+          "time_between_page": {
+            "type": "uniform",
+            "low_boundary": 5,
+            "up_boundary": 20
+          },
+          "page_number":{
+            "type": "fix",
+            "value": 20
+          }
+      }
+    },
+    {
+      "type": "infinity_surfing",
+      "link": "rbc.ru",
+      "scheme": "fast_going"
+    },
+    {
+      "type": "infinity_surfing",
+      "link": "expert.ru",
+      "scheme": "fast_going"
+    },
+    {
+      "type": "infinity_surfing",
+      "link": "livejournal.com",
+      "scheme": "fast_going"
     }
   ]
 }

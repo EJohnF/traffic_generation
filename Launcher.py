@@ -34,7 +34,7 @@ def main(argv):
         Logger.log(LInfo, "launch new process {}".format(proc['name']))
         Logger.log(LInfo, "launched string {}".format(launched_string))
         subprocess.Popen(launched_string, shell=True)
-    time.sleep(10000)
+    time.sleep(config['time_to_live'])
 
 if __name__ == "__main__":
     main(sys.argv[1:])

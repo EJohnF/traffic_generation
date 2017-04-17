@@ -1,7 +1,12 @@
 {
+  "time_to_live": 10000,
   "processes": [
     {
-      "name":"surfing",
+      "name":"Yandex_catalog",
+      "config":"yandex_catalog.json"
+    },
+    {
+      "name":"Different_types",
       "config":"surfing.json"
     }
   ]
