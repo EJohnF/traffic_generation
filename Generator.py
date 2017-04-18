@@ -7,6 +7,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, WebKit, Gdk
 from process_python_api import Logger, LError, LInfo
+import argparse
 
 view = WebKit.WebView()
 help_string = "Generator.py -n <name> -c <configFile>"
@@ -19,31 +20,17 @@ def start_generating(config):
 
 
 def main(argv):
-    config_file = ''
-    name = ''
-    try:
-        opts, args = getopt.getopt(argv, "hn:c:", ["config=", "configuration=", "name="])
-    except getopt.GetoptError:
-        print('exception ' + help_string)
-        sys.exit(2)
-    for opt, arg in opts:
-        print(opt, arg)
-        if opt == '-h':
-            print(help_string)
-            sys.exit(1)
-        if opt in ("-c", "--config", "--configuration"):
-            config_file = arg
-        if opt in ("-n", "--name"):
-            name = arg
+    parser = argparse.ArgumentParser(description='The script for starting threads for traffic generation')
+    parser.add_argument("-c", help='a configuration for generating', metavar='configuration', dest='config',
+                        default='config/configuration.json')
+    parser.add_argument("-n", help='a name of this generator for using in logs', metavar='name', dest='name',
+                        default='default')
+    arguments = parser.parse_args(argv)
 
-    if config_file == '':
-        config_file = 'configuration.json'
-        name = 'default'
-    config_file = "config/"+config_file
-    Logger.init(name)
-    Logger.log(LInfo, "configuration file is {}".format(config_file))
+    Logger.init(arguments.name)
+    Logger.log(LInfo, "configuration file is {}".format(arguments.config))
 
-    f = open(config_file, 'r')
+    f = open(arguments.config, 'r')
     config = json.load(f)
 
     th = Thread(target=start_generating, args=(config,))
