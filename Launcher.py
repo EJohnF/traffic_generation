@@ -6,27 +6,16 @@ import time
 import os
 from process_python_api import Logger, LError, LInfo
 Logger.init("Launcher")
+import argparse
+
 
 def main(argv):
-    config_file = ''
-    try:
-        opts, args = getopt.getopt(argv, "hc:", ["config=", "configuration="])
-    except getopt.GetoptError:
-        print('Launcher.py -c <trackFile>')
-        sys.exit()
-    for opt, arg in opts:
-        if opt == '-h':
-            print('Launcher.py -c <trackFile>')
-            sys.exit()
-        elif opt in ("-c", "--config", "--configuration"):
-            config_file = arg
+    parser = argparse.ArgumentParser(description='The script for launch generators')
+    parser.add_argument("-c", help='a configuration of system to be launched', metavar='configuration', dest='config',
+                        default='config/track.json')
+    arguments = parser.parse_args(argv)
 
-    if config_file == '':
-        config_file = 'config/track.json'
-
-    print('Config file is ', config_file)
-
-    f = open(config_file, 'r')
+    f = open(arguments.config, 'r')
     config = json.load(f)
 
     for proc in config['processes']:
