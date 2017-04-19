@@ -9,6 +9,7 @@ from process_python_api import Logger, LError, LInfo
 import subprocess
 from collections import deque
 from Generator import view
+from Statistics import *
 
 view.connect("load-finished", lambda v, f: fin())
 
@@ -29,6 +30,7 @@ def main_loop():
     while True:
         if prevFinished and len(queue) > 0:
             if last != '':
+                load_page(last, waiting)
                 Logger.log(LInfo, "loading time for {0} was: {1} seconds".format(last, waiting))
             waiting = 0
             prevFinished = False
