@@ -55,4 +55,5 @@ class SiteList(Worker):
     def start(self):
         self.stop = False
         thread = Thread(target=self.worker, args=())
+        thread.setDaemon(True)
         thread.start()

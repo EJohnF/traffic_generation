@@ -4,10 +4,12 @@ import sys
 import subprocess
 import time
 import os
+import signal
 from process_python_api import Logger, LError, LInfo
 Logger.init("Launcher")
 import argparse
 
+process = ''
 
 def main(argv):
     parser = argparse.ArgumentParser(description='The script for launch generators')
@@ -17,13 +19,17 @@ def main(argv):
 
     f = open(arguments.config, 'r')
     config = json.load(f)
-
+    global process
     for proc in config['processes']:
         launched_string = 'python3 Generator.py ' + '-n ' + proc['name'] + ' -c ' + proc['config']
         Logger.log(LInfo, "launch new process {}".format(proc['name']))
         Logger.log(LInfo, "launched string {}".format(launched_string))
-        subprocess.Popen(launched_string, shell=True)
+        process = subprocess.Popen(launched_string, shell=True)
     time.sleep(config['time_to_live'])
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    try:
+        main(sys.argv[1:])
+    except KeyboardInterrupt:
+        # os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+        print('Interrupted')
