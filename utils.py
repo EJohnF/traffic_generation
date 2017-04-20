@@ -36,7 +36,7 @@ def get_sitemaps(siteURL):
         if str.rfind(siteURL, '/') < len(siteURL) - 1:
             url += '/'
         url += 'sitemap.xml'
-    Logger.log(LInfo, 'url to sitemaps: {}'.format(url))
+    Logger.log(LInfo, 'sitemaps_url {}'.format(url))
     try:
         r = requests.get(url)
     except:
@@ -50,7 +50,7 @@ def get_sitemaps(siteURL):
 
 
 def get_URLs_from_sitemap(sitemapURL, number=20, withInfo=False):
-    Logger.log(LInfo, 'parse sitemap: {}'.format(sitemapURL))
+    Logger.log(LInfo, 'sitemap {}'.format(sitemapURL))
     r = requests.get(sitemapURL)
     data = r.text
     soup = BeautifulSoup(data, 'lxml')
@@ -99,7 +99,7 @@ def get_URLs_from_page(url):
 
 
 def generate_pages_google(site_link, number_pages=10):
-    Logger.log(LInfo, 'generate page list by google')
+    Logger.log(LInfo, 'generator google')
     result = []
     i = 0
     for url in google.search("site:" + site_link, num=number_pages):
@@ -112,7 +112,7 @@ def generate_pages_google(site_link, number_pages=10):
 
 
 def generate_pages_sitemap(site, number_pages=10):
-    Logger.log(LInfo, 'generate page list by sitemap')
+    Logger.log(LInfo, 'generator sitemap')
     sitemaps = get_sitemaps(site)
     result = []
     for sm in sitemaps:
@@ -121,7 +121,7 @@ def generate_pages_sitemap(site, number_pages=10):
 
 
 def generate_pages_scraping(site, number_pages=10):
-    Logger.log(LInfo, 'generate page list by page-scraping')
+    Logger.log(LInfo, 'generator page-scraping')
     result = []
     first_lvl_pages = get_URLs_from_page(site)
     first_lvl_pages = random.sample(first_lvl_pages, min(number_pages, len(first_lvl_pages)))
@@ -140,14 +140,14 @@ def generate_page_list(site, generator, number_pages=10):
 
 
 def go_round_site(site, scheme):
-    Logger.log(LInfo, 'process site: {0} scheme: {1}'.format(site, scheme))
+    Logger.log(LInfo, 'site_scheme {}'.format(scheme))
     number_page = distribution_to_value(scheme['page_number'])
-    Logger.log(LInfo, 'number of pages on site: '.format(number_page))
+    Logger.log(LInfo, 'number_page {}'.format(number_page))
     pages_list = generate_page_list(site, scheme['page_generator'], int(number_page))
     for page in pages_list:
         open_page(page)
         sleep_time = distribution_to_value(scheme['time_between_page'])
-        Logger.log(LInfo, 'sleep time: '.format(sleep_time))
+        Logger.log(LInfo, 'sleep {}'.format(sleep_time))
         time.sleep(sleep_time)
 
 

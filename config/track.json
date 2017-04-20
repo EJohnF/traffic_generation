@@ -4,10 +4,6 @@
     {
       "name":"Yandex_catalog",
       "config":"config/yandex_catalog.json"
-    },
-    {
-      "name":"Different_types",
-      "config":"config/surfing.json"
     }
   ]
 }
