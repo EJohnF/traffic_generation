@@ -5,8 +5,8 @@ class Worker:
         self.stop = False
 
     def start(self):
-        Logger.log(LInfo, "start working Specific Type Worker".format(last, waiting))
+        Logger.log(LInfo, "start ".format(self.site_scheme))
 
     def stop(self):
-        Logger.log(LInfo, "stop working Specific Type Worker".format(last, waiting))
+        Logger.log(LInfo, "stop ".format(self.site_scheme))
         self.stop = True

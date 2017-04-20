@@ -9,7 +9,6 @@ from process_python_api import Logger, LError, LInfo
 import subprocess
 from collections import deque
 from Generator import view
-from Statistics import *
 
 view.connect("load-finished", lambda v, f: fin())
 
@@ -30,14 +29,13 @@ def main_loop():
     while True:
         if prevFinished and len(queue) > 0:
             if last != '':
-                load_page(last, waiting)
-                Logger.log(LInfo, "loading time for {0} was: {1} seconds".format(last, waiting))
+                Logger.log(LInfo, "loading_time {}".format(waiting))
             waiting = 0
             prevFinished = False
             Gdk.threads_enter()
             current = queue.popleft()
             last = current
-            Logger.log(LInfo, "open: {}".format(current))
+            Logger.log(LInfo, "open {}".format(current))
             view.open(current)
             Gdk.threads_leave()
         waiting += 1
@@ -49,5 +47,5 @@ th.start()
 
 
 def open_page(link):
-    Logger.log(LInfo, 'put in deque: ' + link + "dec size: " + str(len(queue)))
+    Logger.log(LInfo, "waiting_size " + str(len(queue)))
     queue.append(link)

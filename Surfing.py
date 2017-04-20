@@ -12,7 +12,7 @@ class Surfing(Worker):
         super().__init__(initURL, scheme)
         self.currentURL = initURL
         links = utils.get_URLs_from_page(initURL)
-        Logger.log(LInfo, "number of links on page {0} is {1}".format(initURL, len(links)))
+        Logger.log(LInfo, "links_on_page {}".format(len(links)))
         self.links = set(links)
         self.history = set()
         self.scheme = scheme
@@ -22,7 +22,7 @@ class Surfing(Worker):
             self.currentURL = self.links.pop()
             self.history.add(self.currentURL)
             links = utils.get_URLs_from_page(self.currentURL)
-            Logger.log(LInfo, "number of links on page {0} is {1}".format(self.currentURL, len(links)))
+            Logger.log(LInfo, "links_on_page {}".format(len(links)))
             self.links.update(links)
             self.links -= self.history
             sleep_time = utils.distribution_to_value(self.scheme['time_between_page'])

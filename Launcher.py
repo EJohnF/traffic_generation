@@ -22,8 +22,8 @@ def main(argv):
     global process
     for proc in config['processes']:
         launched_string = 'python3 Generator.py ' + '-n ' + proc['name'] + ' -c ' + proc['config']
-        Logger.log(LInfo, "launch new process {}".format(proc['name']))
-        Logger.log(LInfo, "launched string {}".format(launched_string))
+        Logger.log(LInfo, "new_process {}".format(proc['name']))
+        Logger.log(LInfo, "launched_string {}".format(launched_string))
         process = subprocess.Popen(launched_string, shell=True)
     time.sleep(config['time_to_live'])
 
@@ -31,5 +31,4 @@ if __name__ == "__main__":
     try:
         main(sys.argv[1:])
     except KeyboardInterrupt:
-        # os.killpg(os.getpgid(process.pid), signal.SIGTERM)
         print('Interrupted')

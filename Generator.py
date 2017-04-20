@@ -24,7 +24,7 @@ th = ''
 
 def start_generating(config):
     for site in config["sites"]:
-        Logger.log(LInfo, "open new site scheme: " + str(site))
+        Logger.log(LInfo, "site_scheme " + str(site))
         workers.append(utils.parse_site_scheme(site, config))
 
 
@@ -37,7 +37,7 @@ def main(argv):
     arguments = parser.parse_args(argv)
 
     Logger.init(arguments.name)
-    Logger.log(LInfo, "configuration file is {}".format(arguments.config))
+    Logger.log(LInfo, "configuration {}".format(arguments.config))
 
     f = open(arguments.config, 'r')
     config = json.load(f)
@@ -46,7 +46,7 @@ def main(argv):
     th.setDaemon(True)
     th.start()
     Gtk.main()
-    Logger.log(LInfo, "generating finished")
+    Logger.log(LInfo, "finish")
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal.SIG_DFL)
