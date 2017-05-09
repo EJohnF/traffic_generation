@@ -22,9 +22,11 @@
     "fast_going": {
       "page_generator": "site-scraping",
       "time_between_page": {
-        "type": "uniform",
-        "low_boundary": 1,
-        "up_boundary": 5
+        "type": "dual-normal",
+        "M1": 10,
+        "D1": 40,
+        "M2": 70,
+        "D2": 500
       },
       "page_number":{
         "type": "uniform",

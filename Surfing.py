@@ -11,6 +11,7 @@ class Surfing(Worker):
     def __init__(self, initURL, scheme):
         super().__init__(initURL, scheme)
         self.currentURL = initURL
+        self.th = ''
         links = utils.get_URLs_from_page(initURL)
         Logger.log(LInfo, "links_on_page {}".format(len(links)))
         self.links = set(links)
@@ -18,6 +19,7 @@ class Surfing(Worker):
         self.scheme = scheme
 
     def worker(self):
+        distr_time = utils.create_distribution(self.scheme['time_between_page'])
         while not self.stop and len(self.links) > 0:
             self.currentURL = self.links.pop()
             self.history.add(self.currentURL)
@@ -25,7 +27,7 @@ class Surfing(Worker):
             Logger.log(LInfo, "links_on_page {}".format(len(links)))
             self.links.update(links)
             self.links -= self.history
-            sleep_time = utils.distribution_to_value(self.scheme['time_between_page'])
+            sleep_time = distr_time.next()
             open_page(self.currentURL)
             Logger.log(LInfo, "sleep {}".format(sleep_time))
             time.sleep(sleep_time)
@@ -35,3 +37,4 @@ class Surfing(Worker):
         thread = Thread(target=self.worker, args=())
         thread.setDaemon(True)
         thread.start()
+        self.th = thread
