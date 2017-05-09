@@ -27,6 +27,7 @@ def start_generating(config):
             break
         Logger.log(LInfo, "site_scheme 0 " + str(site))
         workers.append(utils.parse_site_scheme(site, config))
+        sites.append(site)
 
 
 def restart(config):
@@ -52,6 +53,10 @@ def restart(config):
     sw.add(view)
     view.open("http://google.com")
 
+    win = Gtk.Window()
+    win.add(sw)
+    win.show_all()
+
     th.start()
     Gdk.threads_enter()
     Gtk.main()
@@ -61,10 +66,10 @@ def check(config):
     global th
     while True:
         for counter, worker in enumerate(workers):
-            print('check')
             if not worker.th.isAlive():
+                Logger.log(LInfo, 'counter {0} sites {1} {2}'.format(counter, len(sites), sites))
                 Logger.log(LInfo, "restart 0 " + str(sites[counter]))
-                workers.append(utils.parse_site_scheme(sites[counter], config))
+                workers[counter] = utils.parse_site_scheme(sites[counter], config)
         time.sleep(5)
 
 

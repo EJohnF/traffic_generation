@@ -6,10 +6,12 @@ import requests
 from SiteList import SiteList
 from Surfing import Surfing
 from UsualSite import UsualSite
+from GoogleQuery import GoogleQuery
 from Opener import *
 from process_python_api import Logger, LError, LInfo
 from distributions import Uniform, NormalPositive, DualNormal, Fix
 random.seed(10)
+
 
 def create_distribution(scheme):
     dis_type = scheme["type"]
@@ -86,20 +88,26 @@ def get_URLs_from_page(url):
         return []
     soup = BeautifulSoup(page.text, "lxml")
     result = []
-    for tag in soup.body.findAll('a'):
-        if tag.attrs:
-            try:
-                link = tag.attrs['href']
-                if str.find(link, 'http') == -1:
-                    if str.rfind(url, '/') == len(url) - 1:
-                        link = url[0:len(url) - 1] + link
-                    else:
-                        link = url + link
-                result.append(link)
-            except:
-                pass
-    Logger.log(LInfo, 'links_on_page {}'.format(len(result)))
-    return result
+    if soup.body != None:
+        for tag in soup.body.findAll('a'):
+            if tag.attrs:
+                try:
+                    link = tag.attrs['href']
+                    if str.find(link, 'http') == -1:
+                        if str.rfind(url, '/') == len(url) - 1:
+                            link = url[0:len(url) - 1] + link
+                        else:
+                            link = url + link
+                    result.append(link)
+                except:
+                    pass
+        Logger.log(LInfo, 'links_on_page {}'.format(len(result)))
+        if len(result) == 0:
+            return [url]
+        return result
+    else:
+        Logger.log(LError, 'links_on_page 0')
+        return [url]
 
 
 def generate_pages_google(site_link, number_pages=10):
@@ -148,10 +156,9 @@ def go_round_site(site, distr_count, distr_time, page_generator):
     Logger.log(LInfo, 'number_page {}'.format(number_page))
     pages_list = generate_page_list(site, page_generator, int(number_page))
     for page in pages_list:
-        open_page(page)
         sleep_time = distr_time.next()
         Logger.log(LInfo, 'sleep {}'.format(sleep_time))
-        # time.sleep(sleep_time)
+        open_page(page, sleep_time)
 
 
 def parse_scheme(scheme, config):
@@ -167,9 +174,11 @@ def process_specific_type(site_scheme, config):
     if typ == "loaded_list":
         obj = SiteList(site_scheme, config)
     if typ == "infinity_surfing":
-        obj = Surfing(site_scheme['link'], parse_scheme(site_scheme['scheme'], config))
+        obj = Surfing(site_scheme, config)
     if typ == "usual_site":
         obj = UsualSite(site_scheme, config)
+    if typ == "google_query":
+        obj = GoogleQuery(site_scheme, config)
     obj.start()
     return obj
 
