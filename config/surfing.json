@@ -1,35 +1,36 @@
 {
-  "page_generators": [
-    "google", "sitemap", "site-scraping"
-  ],
-  "distribution_types": [
-    "uniform", "log-normal"
-  ],
   "schemes": {
-    "default": {
+    "dual-normal": {
       "page_generator": "site-scraping",
       "time_between_page": {
-        "type": "uniform",
-        "low_boundary": 1,
-        "up_boundary": 15
-      },
-      "page_number":{
-        "type": "log-normal",
-        "M": 2,
-        "D": 1
+        "type": "dual-normal",
+        "M1": 10,
+        "D1": 40,
+        "M2": 70,
+        "D2": 500
       }
     },
-    "fast_going": {
+    "fix": {
+      "page_generator": "site-scraping",
+      "time_between_page": {
+        "type": "fix",
+        "value": 5
+      }
+    },
+    "positive-normal": {
+      "page_generator": "site-scraping",
+      "time_between_page": {
+        "type": "positive-normal",
+        "M":15,
+        "D":25
+      }
+    },
+    "uniform": {
       "page_generator": "site-scraping",
       "time_between_page": {
         "type": "uniform",
         "low_boundary": 1,
-        "up_boundary": 5
-      },
-      "page_number":{
-        "type": "uniform",
-        "low_boundary": 1,
-        "up_boundary": 10
+        "up_boundary": 20
       }
     }
   },
@@ -37,7 +38,7 @@
     {
       "type": "infinity_surfing",
       "link": "livejournal.com",
-      "scheme": "fast_going"
+      "scheme": "dual_normal"
     }
   ]
 }

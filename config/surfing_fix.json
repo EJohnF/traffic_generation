@@ -1,44 +1,18 @@
 {
   "schemes": {
-    "dual-normal": {
-      "page_generator": "site-scraping",
-      "time_between_page": {
-        "type": "dual-normal",
-        "M1": 10,
-        "D1": 40,
-        "M2": 70,
-        "D2": 500
-      }
-    },
     "fix": {
       "page_generator": "site-scraping",
       "time_between_page": {
         "type": "fix",
         "value": 5
       }
-    },
-    "positive-normal": {
-      "page_generator": "site-scraping",
-      "time_between_page": {
-        "type": "positive-normal",
-        "M":15,
-        "D":25
-      }
-    },
-    "uniform": {
-      "page_generator": "site-scraping",
-      "time_between_page": {
-        "type": "uniform",
-        "low_boundary": 1,
-        "up_boundary": 20
-      }
     }
   },
   "sites":[
     {
       "type": "infinity_surfing",
-      "link": "livejournal.com",
-      "scheme": "dual_normal"
+      "link": "expert.ru",
+      "scheme": "fix"
     }
   ]
 }

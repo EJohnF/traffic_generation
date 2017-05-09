@@ -1,22 +1,21 @@
 {
-  "time_to_live": 10000,
+  "time_to_live": 10000000,
   "processes": [
     {
-      "name":"Yandex_catalog",
-      "config":"config/yandex_catalog.json"
+      "name":"surfing_dual",
+      "config":"config/surfing_dual_normal.json"
     },
     {
-      "name":"Google_queries",
-      "config":"config/google.json"
+      "name":"surfing_fix",
+      "config":"config/surfing_fix.json"
     },
     {
-      "name":"Different_types",
-      "config":"config/different_types.json"
+      "name":"surfing_positive",
+      "config":"config/surfing_positive_normal.json"
     },
     {
-      "name":"Surfing",
-      "config":"config/surfing.json"
+      "name":"surfing_uniform",
+      "config":"config/surfing_uniform.json"
     }
-
   ]
 }

@@ -1,0 +1,42 @@
+{
+  "schemes": {
+    "default": {
+      "page_generator": "site-scraping",
+      "time_between_page": {
+        "type": "positive-normal",
+        "M": 15,
+        "D": 10
+      },
+      "page_number":{
+        "type": "positive-normal",
+        "M": 5,
+        "D": 10
+      }
+    }
+  },
+  "sites":[
+    {
+      "type": "google_query",
+      "queries": [
+        "Евро 2016",
+        "Евровидение 2016",
+        "Путин",
+        "Трамп",
+        "Новости в мире",
+        "Пакет Яровой",
+        "iPhone7",
+        "Samsung",
+        "Илон Маск",
+        "Электрокары",
+        "Олимпийские игры в Рио",
+        "Pokemon GO"
+      ],
+      "scheme":"default",
+      "site_number":{
+        "type": "positive-normal",
+        "M": 5,
+        "D": 10
+      }
+    }
+  ]
+}

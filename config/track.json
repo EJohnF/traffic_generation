@@ -4,6 +4,19 @@
     {
       "name":"Yandex_catalog",
       "config":"config/yandex_catalog.json"
+    },
+    {
+      "name":"Google_queries",
+      "config":"config/google.json"
+    },
+    {
+      "name":"Different_types",
+      "config":"config/different_types.json"
+    },
+    {
+      "name":"Surfing",
+      "config":"config/surfing.json"
     }
+
   ]
 }
