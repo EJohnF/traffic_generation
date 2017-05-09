@@ -1,0 +1,68 @@
+{
+  "page_generators": [
+    "google", "sitemap", "site-scraping"
+  ],
+  "distribution_types": [
+    "uniform", "log-normal"
+  ],
+  "schemes": {
+    "default": {
+      "page_generator": "site-scraping",
+      "time_between_page": {
+        "type": "uniform",
+        "low_boundary": 1,
+        "up_boundary": 15
+      },
+      "page_number":{
+        "type": "log-normal",
+        "M": 2,
+        "D": 1
+      }
+    },
+    "fast_going": {
+      "page_generator": "site-scraping",
+      "time_between_page": {
+        "type": "uniform",
+        "low_boundary": 1,
+        "up_boundary": 5
+      },
+      "page_number":{
+        "type": "uniform",
+        "low_boundary": 1,
+        "up_boundary": 10
+      }
+    }
+  },
+  "sites":[
+    {
+      "type": "infinity_surfing",
+      "link": "livejournal.com",
+      "scheme": "fast_going"
+    },
+    {
+      "link": "xaker.ru",
+      "scheme": {
+          "page_generator": "google",
+          "time_between_page": {
+            "type": "uniform",
+            "low_boundary": 5,
+            "up_boundary": 20
+          },
+          "page_number":{
+            "type": "fix",
+            "value": 20
+          }
+      }
+    },
+    {
+      "type": "infinity_surfing",
+      "link": "rbc.ru",
+      "scheme": "fast_going"
+    },
+    {
+      "type": "infinity_surfing",
+      "link": "expert.ru",
+      "scheme": "fast_going"
+    }
+  ]
+}
