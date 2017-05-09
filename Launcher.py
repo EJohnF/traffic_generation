@@ -22,8 +22,8 @@ def main(argv):
     global process
     for proc in config['processes']:
         launched_string = 'python3 Generator.py ' + '-n ' + proc['name'] + ' -c ' + proc['config']
-        Logger.log(LInfo, "new_process {}".format(proc['name']))
-        Logger.log(LInfo, "launched_string {}".format(launched_string))
+        Logger.log(LInfo, "new_process 0 {}".format(proc['name']))
+        Logger.log(LInfo, "launched_string 0 {}".format(launched_string))
         process = subprocess.Popen(launched_string, shell=True)
     time.sleep(config['time_to_live'])
 

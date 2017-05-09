@@ -9,23 +9,64 @@ from gi.repository import Gtk, WebKit, Gdk, GLib
 from process_python_api import Logger, LError, LInfo
 import argparse
 import signal
-
+import time
 view = WebKit.WebView()
-Gdk.threads_init()
-sw = Gtk.ScrolledWindow()
-sw.add(view)
-view.open("http://google.com")
-sw.connect("destroy", Gtk.main_quit)
-sw.connect("delete-event", Gtk.main_quit)
 workers = []
+sites = []
 
-
+stop = False
 th = ''
 
 def start_generating(config):
+    global stop
+    global workers
+    global sites
     for site in config["sites"]:
-        Logger.log(LInfo, "site_scheme " + str(site))
+        if stop:
+            stop = False
+            break
+        Logger.log(LInfo, "site_scheme 0 " + str(site))
         workers.append(utils.parse_site_scheme(site, config))
+
+
+def restart(config):
+    time.sleep(500)
+    Logger.log(LInfo, "restart 0 ")
+    Gdk.threads_enter()
+    Gtk.main_quit()
+    Gdk.threads_leave()
+
+    global stop
+    global view
+    view = WebKit.WebView()
+    stop = True
+    time.sleep(10)
+    th = Thread(target=start_generating, args=(config,))
+    th.setDaemon(True)
+
+    th1 = Thread(target=check, args=(config,))
+    th1.start()
+
+    Gdk.threads_init()
+    sw = Gtk.ScrolledWindow()
+    sw.add(view)
+    view.open("http://google.com")
+
+    th.start()
+    Gdk.threads_enter()
+    Gtk.main()
+    Gdk.threads_leave()
+
+def check(config):
+    global th
+    while True:
+        for counter, worker in enumerate(workers):
+            print('check')
+            if not worker.th.isAlive():
+                Logger.log(LInfo, "restart 0 " + str(sites[counter]))
+                workers.append(utils.parse_site_scheme(sites[counter], config))
+        time.sleep(5)
+
 
 
 def main(argv):
@@ -37,20 +78,35 @@ def main(argv):
     arguments = parser.parse_args(argv)
 
     Logger.init(arguments.name)
-    Logger.log(LInfo, "configuration {}".format(arguments.config))
+    Logger.log(LInfo, "configuration 0 {}".format(arguments.config))
 
     f = open(arguments.config, 'r')
     config = json.load(f)
     global th
     th = Thread(target=start_generating, args=(config,))
     th.setDaemon(True)
+
+    th1 = Thread(target=check, args=(config,))
+    th1.start()
+
+
+    Gdk.threads_init()
+    sw = Gtk.ScrolledWindow()
+    sw.add(view)
+    view.open("http://google.com")
+
     th.start()
     Gtk.main()
     Logger.log(LInfo, "finish")
 
+def print_something(signal, frame):
+    print(str(signal))
+    print('RESTORE')
+    sys.exit(1)
+
+
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal.SIG_DFL)
+    signal.signal(signal.SIGSEGV, print_something)
+    signal.signal(signal.SIGTRAP, print_something)
     main(sys.argv[1:])
-
-
-

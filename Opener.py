@@ -27,15 +27,17 @@ def main_loop():
     global last
     waiting = 0
     while True:
-        if prevFinished and len(queue) > 0:
+        print("loop prev finished " + str(prevFinished))
+        if (prevFinished or waiting > 50) and len(queue) > 0:
             if last != '':
-                Logger.log(LInfo, "loading_time {}".format(waiting))
+                Logger.log(LInfo, "loading_time {} ".format(waiting))
             waiting = 0
             prevFinished = False
-            Gdk.threads_enter()
             current = queue.popleft()
             last = current
-            Logger.log(LInfo, "open {}".format(current))
+            Logger.log(LInfo, "open 0 {}".format(current))
+            print('open next')
+            Gdk.threads_enter()
             view.open(current)
             Gdk.threads_leave()
         waiting += 1
@@ -43,9 +45,17 @@ def main_loop():
 
 
 th = Thread(target=main_loop)
+th.setDaemon(True)
 th.start()
 
 
 def open_page(link):
+    global th
+    if not th.isAlive():
+        Logger.log(LInfo, "restart 0 main loop")
+        th = Thread(target=main_loop)
+        th.setDaemon(True)
+        th.start()
     Logger.log(LInfo, "waiting_size " + str(len(queue)))
     queue.append(link)
+
