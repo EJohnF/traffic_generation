@@ -10,33 +10,49 @@ import subprocess
 from collections import deque
 from Generator import view
 
-view.connect("load-finished", lambda v, f: fin())
 
-queue = deque()
+pages = deque()
+times = deque()
 prevFinished = True
 last = ''
+isError = False
 
-
-def fin():
+def fin(v, param):
     global prevFinished
     prevFinished = True
+
+
+def error(a,b,c,d):
+    global isError
+    isError = True
+    Logger.log(LError, "error 0 {0} {1}".format(c, d))
+
+view.connect("load-finished", fin)
+view.connect("load-error", error)
 
 
 def main_loop():
     global prevFinished
     global last
+    global isError
     waiting = 0
+    # if error occur - freeze flow for 1 min
     while True:
-        print("loop prev finished " + str(prevFinished))
-        if (prevFinished or waiting > 50) and len(queue) > 0:
+        if isError:
+            time.sleep(60)
+            isError = False
+        if (prevFinished or waiting > 50) and len(pages) > 0:
             if last != '':
                 Logger.log(LInfo, "loading_time {} ".format(waiting))
             waiting = 0
             prevFinished = False
-            current = queue.popleft()
+
+            current = pages.popleft()
+            time.sleep(times.popleft())
             last = current
             Logger.log(LInfo, "open 0 {}".format(current))
-            print('open next')
+            # print('open next')
+
             Gdk.threads_enter()
             view.open(current)
             Gdk.threads_leave()
@@ -49,13 +65,17 @@ th.setDaemon(True)
 th.start()
 
 
-def open_page(link):
+def open_page(link, wait):
     global th
     if not th.isAlive():
         Logger.log(LInfo, "restart 0 main loop")
         th = Thread(target=main_loop)
         th.setDaemon(True)
         th.start()
-    Logger.log(LInfo, "waiting_size " + str(len(queue)))
-    queue.append(link)
+    if len(pages) > 200:
+        time.sleep(600)
+    pages.append(link)
+    times.append(wait)
+    Logger.log(LInfo, "waiting_size " + str(len(pages)))
+
 
