@@ -21,8 +21,6 @@ class DualNormal(Distribution):
                     1.0 / (np.sqrt(2 * np.pi * d2)) * np.exp(- (i - m2) ** 2 / float(2 * d2))
                 )
             )
-        print(self.p)
-        print(sum(self.p))
         self.p[0] += 1-sum(self.p)
 
     def next(self):

@@ -1,4 +1,5 @@
 from distributions.Distribution import Distribution
+import numpy
 
 
 class NormalPositive(Distribution):
