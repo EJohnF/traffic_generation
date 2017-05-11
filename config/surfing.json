@@ -1,6 +1,6 @@
 {
   "schemes": {
-    "dual-normal": {
+    "dual_normal": {
       "page_generator": "site-scraping",
       "time_between_page": {
         "type": "dual-normal",

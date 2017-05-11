@@ -26,7 +26,19 @@ def dual_normal(m1, d1, m2, d2):
         )
     return p
 
-p = dual_normal(10, 40, 70, 500)
+
+def exponential(l):
+    arr = np.random.exponential(l, 1000)
+    p = np.zeros(100)
+    for a in arr:
+        if a < 100:
+            p[a] += 1
+    for count, per in enumerate(p):
+        p[count] /= 1000
+    return p
+
+# p = dual_normal(10, 40, 70, 500)
+p = exponential(5)
 # print(p)
 if float(python_version()[0:3]) < 3:
     plt.plot(p)

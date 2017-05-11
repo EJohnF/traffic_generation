@@ -33,6 +33,17 @@
         "low_boundary": 1,
         "up_boundary": 10
       }
+    },
+    "exponential": {
+      "page_generator": "site-scraping",
+      "time_between_page": {
+        "type": "exponential",
+        "L": 10
+      },
+      "page_number":{
+        "type": "exponential",
+        "L": 15
+      }
     }
   },
   "sites":[
@@ -43,7 +54,7 @@
       "worksheet":"List",
       "column":"A",
       "count_for_visit": 0,
-      "scheme": "fast_going"
+      "scheme": "exponential"
     }
   ]
 }

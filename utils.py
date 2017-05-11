@@ -9,7 +9,7 @@ from UsualSite import UsualSite
 from GoogleQuery import GoogleQuery
 from Opener import *
 from process_python_api import Logger, LError, LInfo
-from distributions import Uniform, NormalPositive, DualNormal, Fix
+from distributions import Uniform, NormalPositive, DualNormal, Fix, Exponential
 random.seed(10)
 
 
@@ -23,6 +23,8 @@ def create_distribution(scheme):
         return Fix.Fix(scheme)
     if dis_type == "dual-normal":
         return DualNormal.DualNormal(scheme)
+    if dis_type == "exponential":
+        return Exponential.Exponential(scheme)
 
     Logger.log(LError, 'receive 0 unknow distribution type {}'.format(dis_type))
     return 0
