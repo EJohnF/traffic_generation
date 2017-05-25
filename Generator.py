@@ -1,4 +1,3 @@
-import getopt
 import json
 import sys
 import utils
@@ -30,38 +29,6 @@ def start_generating(config):
         sites.append(site)
 
 
-def restart(config):
-    time.sleep(500)
-    Logger.log(LInfo, "restart 0 ")
-    Gdk.threads_enter()
-    Gtk.main_quit()
-    Gdk.threads_leave()
-
-    global stop
-    global view
-    view = WebKit.WebView()
-    stop = True
-    time.sleep(10)
-    th = Thread(target=start_generating, args=(config,))
-    th.setDaemon(True)
-
-    th1 = Thread(target=check, args=(config,))
-    th1.start()
-
-    Gdk.threads_init()
-    sw = Gtk.ScrolledWindow()
-    sw.add(view)
-    view.open("http://google.com")
-
-    win = Gtk.Window()
-    win.add(sw)
-    win.show_all()
-
-    th.start()
-    Gdk.threads_enter()
-    Gtk.main()
-    Gdk.threads_leave()
-
 def check(config):
     global th
     while True:
@@ -71,7 +38,6 @@ def check(config):
                 Logger.log(LInfo, "restart 0 " + str(sites[counter]))
                 workers[counter] = utils.parse_site_scheme(sites[counter], config)
         time.sleep(5)
-
 
 
 def main(argv):
@@ -98,20 +64,17 @@ def main(argv):
     Gdk.threads_init()
     sw = Gtk.ScrolledWindow()
     sw.add(view)
-    view.open("http://google.com")
 
+
+    settings = WebKit.WebSettings()
+    settings.set_property("user-agent", config["user_agent"])
+    view.set_settings(settings)
+    view.open("http://google.com")
     th.start()
     Gtk.main()
     Logger.log(LInfo, "finish")
 
-def print_something(signal, frame):
-    print(str(signal))
-    print('RESTORE')
-    sys.exit(1)
-
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    signal.signal(signal.SIGSEGV, print_something)
-    signal.signal(signal.SIGTRAP, print_something)
     main(sys.argv[1:])

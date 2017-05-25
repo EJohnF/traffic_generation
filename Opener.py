@@ -72,8 +72,8 @@ def open_page(link, wait):
         th = Thread(target=main_loop)
         th.setDaemon(True)
         th.start()
-    if len(pages) > 200:
-        time.sleep(600)
+    # if len(pages) > 2000:
+    #     time.sleep(600)
     pages.append(link)
     times.append(wait)
     Logger.log(LInfo, "waiting_size " + str(len(pages)))

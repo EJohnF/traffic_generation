@@ -9,7 +9,7 @@ from UsualSite import UsualSite
 from GoogleQuery import GoogleQuery
 from Opener import *
 from process_python_api import Logger, LError, LInfo
-from distributions import Uniform, NormalPositive, DualNormal, Fix, Exponential
+from distributions import Uniform, NormalPositive, DualNormal, Fix, Exponential, Custom
 random.seed(10)
 
 
@@ -25,6 +25,8 @@ def create_distribution(scheme):
         return DualNormal.DualNormal(scheme)
     if dis_type == "exponential":
         return Exponential.Exponential(scheme)
+    if dis_type == "custom":
+        return Custom.Custom(scheme)
 
     Logger.log(LError, 'receive 0 unknow distribution type {}'.format(dis_type))
     return 0
@@ -154,11 +156,11 @@ def generate_page_list(site, generator, number_pages=10):
 
 
 def go_round_site(site, distr_count, distr_time, page_generator):
-    number_page = distr_count.next()
+    number_page = numpy.round(distr_count.next())
     Logger.log(LInfo, 'number_page {}'.format(number_page))
     pages_list = generate_page_list(site, page_generator, int(number_page))
     for page in pages_list:
-        sleep_time = distr_time.next()
+        sleep_time = numpy.round(distr_time.next())
         Logger.log(LInfo, 'sleep {}'.format(sleep_time))
         open_page(page, sleep_time)
 
