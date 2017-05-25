@@ -1,5 +1,5 @@
 {
-  "max_loading_time": 50,
+  "max_loading_time": 5,
   "user_agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0",
   "schemes": {
     "exponential": {

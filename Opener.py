@@ -8,7 +8,7 @@ import time
 from process_python_api import Logger, LError, LInfo
 import subprocess
 from collections import deque
-from Generator import view
+from Generator import view, max_loading_time
 
 
 pages = deque()
@@ -39,9 +39,9 @@ def main_loop():
     # if error occur - freeze flow for 1 min
     while True:
         if isError:
-            time.sleep(60)
+            time.sleep(max_loading_time-waiting)
             isError = False
-        if (prevFinished or waiting > 50) and len(pages) > 0:
+        if (prevFinished or waiting > max_loading_time) and len(pages) > 0:
             if last != '':
                 Logger.log(LInfo, "loading_time {} ".format(waiting))
             waiting = 0

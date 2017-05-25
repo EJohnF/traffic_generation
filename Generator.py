@@ -10,6 +10,7 @@ import argparse
 import signal
 import time
 view = WebKit.WebView()
+max_loading_time = 10
 workers = []
 sites = []
 
@@ -54,6 +55,8 @@ def main(argv):
     f = open(arguments.config, 'r')
     config = json.load(f)
     global th
+    global max_loading_time
+    max_loading_time = config["max_loading_time"]
     th = Thread(target=start_generating, args=(config,))
     th.setDaemon(True)
 
