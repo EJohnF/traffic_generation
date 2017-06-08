@@ -1,14 +1,13 @@
 import random
 from threading import Thread
 import gi
-
+import sys
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, WebKit, Gdk
 import time
 from process_python_api import Logger, LError, LInfo
-import subprocess
 from collections import deque
-from Generator import view, max_loading_time
+
 
 
 pages = deque()
@@ -25,10 +24,12 @@ def fin(v, param):
 def error(a,b,c,d):
     global isError
     isError = True
-    Logger.log(LError, "error 0 {0} {1}".format(c, d))
 
-view.connect("load-finished", fin)
-view.connect("load-error", error)
+
+if __name__ != "__main__":
+    from Generator import view, max_loading_time
+    view.connect("load-finished", fin)
+    view.connect("load-error", error)
 
 
 def main_loop():
@@ -36,13 +37,12 @@ def main_loop():
     global last
     global isError
     waiting = 0
-    # if error occur - freeze flow for 1 min
     while True:
         if isError:
-            time.sleep(max_loading_time-waiting)
+            time.sleep(5)
             isError = False
         if (prevFinished or waiting > max_loading_time) and len(pages) > 0:
-            if last != '':
+            if last != '' and prevFinished:
                 Logger.log(LInfo, "loading_time {} ".format(waiting))
             waiting = 0
             prevFinished = False
@@ -78,4 +78,18 @@ def open_page(link, wait):
     times.append(wait)
     Logger.log(LInfo, "waiting_size " + str(len(pages)))
 
+if __name__ == "__main__":
+    view = WebKit.WebView()
+    sw = Gtk.ScrolledWindow()
+    sw.add(view)
 
+    win = Gtk.Window()
+    win.set_default_size(1200, 800)
+    win.add(sw)
+    win.show_all()
+
+    if (len(sys.argv)>1):
+        view.open(sys.argv[1])
+    else:
+        view.open("https://habrahabr.ru/")
+    Gtk.main()

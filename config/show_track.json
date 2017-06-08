@@ -1,0 +1,21 @@
+{
+  "time_to_live": 10000,
+  "processes": [
+    {
+      "name":"Yandex",
+      "config":"config/yandex_catalog.json"
+    },
+    {
+      "name":"surfing_dual",
+      "config":"config/surfing_dual_normal.json"
+    },
+    {
+      "name":"surfing_positive",
+      "config":"config/surfing_positive_normal.json"
+    },
+    {
+      "name":"Multithreading",
+      "config":"config/different_types.json"
+    }
+  ]
+}

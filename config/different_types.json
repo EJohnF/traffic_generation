@@ -7,14 +7,14 @@
   ],
   "schemes": {
     "default": {
-      "page_generator": "site-scraping",
+      "page_generator": "google",
       "time_between_page": {
         "type": "uniform",
         "low_boundary": 1,
         "up_boundary": 15
       },
       "page_number":{
-        "type": "log-normal",
+        "type": "positive-normal",
         "M": 2,
         "D": 1
       }
@@ -35,9 +35,9 @@
   },
   "sites":[
     {
-      "type": "infinity_surfing",
+      "type": "usual_site",
       "link": "livejournal.com",
-      "scheme": "fast_going"
+      "scheme": "default"
     },
     {
       "link": "xaker.ru",
@@ -63,6 +63,30 @@
       "type": "infinity_surfing",
       "link": "expert.ru",
       "scheme": "fast_going"
+    },
+    {
+      "type": "google_query",
+      "queries": [
+        "Евро 2016",
+        "Евровидение 2016",
+        "Путин",
+        "Трамп",
+        "Новости в мире",
+        "Пакет Яровой",
+        "iPhone7",
+        "Samsung",
+        "Илон Маск",
+        "Электрокары",
+        "Олимпийские игры в Рио",
+        "Pokemon GO"
+      ],
+      "scheme": "default",
+      "site_number": {
+        "type": "positive-normal",
+        "M": 5,
+        "D": 10
+      }
     }
+
   ]
 }

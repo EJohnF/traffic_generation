@@ -2,16 +2,17 @@
   "max_loading_time": 5,
   "user_agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0",
   "schemes": {
-    "exponential": {
+    "default": {
       "page_generator": "site-scraping",
-      "time_between_page": {
+      "page_number": {
         "type": "uniform",
         "low_boundary": 1,
-        "up_boundary": 20
+        "up_boundary": 5
       },
-      "page_number":{
-        "type": "exponential",
-        "L": 15
+      "time_between_page":{
+        "type": "positive-normal",
+        "M":7,
+        "D":25
       }
     }
   },
@@ -23,7 +24,7 @@
       "worksheet":"List",
       "column":"A",
       "count_for_visit": 0,
-      "scheme": "exponential"
+      "scheme": "default"
     }
   ]
 }

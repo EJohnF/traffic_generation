@@ -116,9 +116,9 @@ def get_URLs_from_page(url):
 
 def generate_pages_google(site_link, number_pages=10):
     Logger.log(LInfo, 'generator 0 google')
-    result = []
+    result = [site_link]
     i = 0
-    for url in google.search("site:" + site_link, num=number_pages):
+    for url in google.search("site:" + site_link, num=number_pages, pause=3.0):
         if i < number_pages:
             result.append(url)
             i += 1
@@ -130,7 +130,7 @@ def generate_pages_google(site_link, number_pages=10):
 def generate_pages_sitemap(site, number_pages=10):
     Logger.log(LInfo, 'generator 0 sitemap')
     sitemaps = get_sitemaps(site)
-    result = []
+    result = [site]
     for sm in sitemaps:
         result += get_URLs_from_sitemap(sm, number_pages)
     return random.sample(result, number_pages)
@@ -138,13 +138,14 @@ def generate_pages_sitemap(site, number_pages=10):
 
 def generate_pages_scraping(site, number_pages=10):
     Logger.log(LInfo, 'generator 0 page-scraping')
-    result = []
+    result = [site]
     first_lvl_pages = get_URLs_from_page(site)
     first_lvl_pages = random.sample(first_lvl_pages, min(number_pages, len(first_lvl_pages)))
     for page in first_lvl_pages:
         result += get_URLs_from_page(page)
     result = first_lvl_pages + result
-    return random.sample(result, min(number_pages, len(result)))
+    newRes = [site] + random.sample(result, min(number_pages, len(result)))
+    return newRes
 
 
 def generate_page_list(site, generator, number_pages=10):
@@ -157,7 +158,7 @@ def generate_page_list(site, generator, number_pages=10):
 
 def go_round_site(site, distr_count, distr_time, page_generator):
     number_page = numpy.round(distr_count.next())
-    Logger.log(LInfo, 'number_page {}'.format(number_page))
+    Logger.log(LInfo, 'number_page {}'.format(int(number_page)))
     pages_list = generate_page_list(site, page_generator, int(number_page))
     for page in pages_list:
         sleep_time = numpy.round(distr_time.next())

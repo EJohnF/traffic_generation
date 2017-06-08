@@ -2,7 +2,7 @@
   "time_to_live": 10000,
   "processes": [
     {
-      "name":"Yandex_catalog",
+      "name":"Yandex",
       "config":"config/yandex_catalog.json"
     }
   ]

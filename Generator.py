@@ -56,22 +56,27 @@ def main(argv):
     config = json.load(f)
     global th
     global max_loading_time
-    max_loading_time = config["max_loading_time"]
+    max_loading_time = 50
+    try:
+        max_loading_time = config["max_loading_time"]
+    except:
+        pass
     th = Thread(target=start_generating, args=(config,))
     th.setDaemon(True)
 
     th1 = Thread(target=check, args=(config,))
     th1.start()
 
-
     Gdk.threads_init()
     sw = Gtk.ScrolledWindow()
     sw.add(view)
 
-
-    settings = WebKit.WebSettings()
-    settings.set_property("user-agent", config["user_agent"])
-    view.set_settings(settings)
+    try:
+        settings = WebKit.WebSettings()
+        settings.set_property("user-agent", config["user_agent"])
+        view.set_settings(settings)
+    except:
+        pass
     view.open("http://google.com")
     th.start()
     Gtk.main()

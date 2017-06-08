@@ -1,7 +1,7 @@
 {
   "schemes": {
     "positive_normal": {
-      "page_generator": "site-scraping",
+      "page_generator": "google",
       "time_between_page": {
         "type": "positive-normal",
         "M":15,
